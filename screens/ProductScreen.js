@@ -1,65 +1,35 @@
-import { View, Text, Pressable, TextInput, StyleSheet } from "react-native";
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation } from "@react-navigation/native";
+import { useContext, useState } from "react";
+import { View, Text, Pressable, TextInput, StyleSheet, Image } from "react-native";
+import { CartContext } from "../CartContext";
 import axios from "axios";
+import EditScreen from "./EditScreen";
 
 const ProductScreen = ({ route }) => {
-  console.log(route.params.item);
-
+  const [product, setProduct] = useState(route.params.item);
+  
   const nav = useNavigation();
 
-  const { productID, productName, productTitle, description, price, photo } =
-    route.params.item;
+  const { addItemToCart } = useContext(CartContext);
 
-
-
-function deleteProduct(productID) {
- axios 
-      .delete(`http://10.0.2.2:8080/api/product/${productID}`)
-      .then(nav.navigate('HomeScreen'));
-  }
-
-
+  
   return (
-    <View style={styles.container}>
-
-        <View>
-         <TextInput 
-         placeholderTextColor="white"
-         style={styles.input}
-         placeholder={productName}
-         />
-         <TextInput 
-         placeholderTextColor="white"
-         style={styles.input}
-         placeholder={productTitle}
-         />
-         <TextInput 
-         placeholderTextColor="white"
-         style={styles.input}
-         placeholder={description}
-         />
-         <TextInput 
-         placeholderTextColor="white"
-         style={styles.input}
-         placeholder={JSON.stringify(price)}
-         />
-         <TextInput 
-         placeholderTextColor="white"
-         style={styles.input}
-         placeholder={photo}
-         />
-
-      <Pressable onPress={() => deleteProduct(productID)}>
-        <Text>Delete</Text>
+    <View>
+      <View>     
+      <Text>Name: {product.productName}</Text>
+      <Text>Title: {product.productTitle}</Text>
+      <Text>Description: {product.description}</Text>
+      <Text>Price: {product.price}</Text>
+      <Image source={{uri: product.photo}} style={styles.image}/> 
+      </View>
+      <Pressable onPress={() => nav.navigate('editscreen',{product} )}>
+        <Text>Edit</Text>
         </Pressable>
-         </View>
-   
     </View>
   );
 };
 
 export default ProductScreen;
-
 const styles = StyleSheet.create({
   container: {
     flex:1,
@@ -74,6 +44,11 @@ const styles = StyleSheet.create({
     padding: 8,
     margin: 10,
     width: 200,
+  },
+  image: {
+    width:150,
+    height:150,
+    borderRadius:20
   },
 
 });

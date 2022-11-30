@@ -17,8 +17,6 @@ import { useNavigation } from '@react-navigation/native'
         .get('http://10.0.2.2:8080/api/product').then((res) => {
         setProduct(res.data);
         console.log(res.data);
-
-        
       })
       }
 
@@ -36,7 +34,6 @@ import { useNavigation } from '@react-navigation/native'
           <Image source={{uri: item.photo}} style={styles.image} />
             <View>
    
-        {product.map((item, index) => (
           <View key={index} style={styles.column}>
           <Text style={styles.text}>
             {item.productName}
@@ -51,11 +48,11 @@ import { useNavigation } from '@react-navigation/native'
             {item.price}
             </Text>
             </View>  
-        ))}
+    
            <Pressable style={styles.buttonContainer}
            onPress={() => nav.navigate('productscreen', {item})}>
 
-        <Text style={styles.button}>Edit</Text>
+        <Text style={styles.button}>Whatever</Text>
         </Pressable>
         </View>
         </View>

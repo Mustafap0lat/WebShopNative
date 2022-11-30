@@ -5,6 +5,8 @@ import { View, Text, StyleSheet, TextInput } from "react-native"
 import AddProduct from './screens/AddProduct';
 import HomeScreen from './screens/HomeScreen';
 import ProductScreen from "./screens/ProductScreen";
+import { CartProvider } from './CartContext';
+import EditScreen from './screens/EditScreen';
 
 
 
@@ -16,43 +18,52 @@ function Navigation() {
   
   
     return (
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName={HomeScreen}>
-          <Stack.Screen 
-            name="HomeScreen" 
-            component={HomeScreen} 
-            options={{
-                headerShown: false
-            }}
-            />
-          <Stack.Screen 
-            name="Add" 
-            component={AddProduct}
-            options={{
-                headerStyle:{
-                    backgroundColor:"#1c1c1c",
-                },
-                headerTintColor:"white",
-                headerTitleAlign:"center"
-                
-            }}
+      <CartProvider>
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName={HomeScreen}>
+            <Stack.Screen
+              name="HomeScreen"
+              component={HomeScreen}
+              options={{
+                headerShown: false,
+              }}
             />
             <Stack.Screen
-             name='productscreen'
+              name="Add"
+              component={AddProduct}
+              options={{
+                headerStyle: {
+                  backgroundColor: "#1c1c1c",
+                },
+                headerTintColor: "white",
+                headerTitleAlign: "center",
+              }}
+            />
+            <Stack.Screen
+              name="productscreen"
               component={ProductScreen}
-             options={
-              {headerStyle:{
-              backgroundColor:"#1c1c1c",
-            },
-              headerTintColor: "white",
-              headerTitleAlign:"center"
-         
-             }}
-              />
-
-        </Stack.Navigator>
-      </NavigationContainer>
-      
+              options={{
+                headerStyle: {
+                  backgroundColor: "#1c1c1c",
+                },
+                headerTintColor: "white",
+                headerTitleAlign: "center",
+              }}
+            />
+            <Stack.Screen
+              name="editscreen"
+              component={EditScreen}
+              options={{
+                headerStyle: {
+                  backgroundColor: "#1c1c1c",
+                },
+                headerTintColor: "white",
+                headerTitleAlign: "center",
+              }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </CartProvider>
     );
 }
 

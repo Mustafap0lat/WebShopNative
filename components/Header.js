@@ -1,14 +1,21 @@
 import React from 'react'
-import { View, Text, StyleSheet } from "react-native"
+import { useNavigation } from "@react-navigation/native";
+import { View, Text, StyleSheet, Pressable } from "react-native"
 import Entypo from "react-native-vector-icons/Entypo"
 
 
 function Header() {
+
+  const nav = useNavigation();
+
+
   return (
     <View style={styles.container}>
       <Entypo name="login" size={30} color="#efefef" />
       <Text style={styles.heading}>Black Everyday</Text>
+      <Pressable onPress={() => {nav.navigate("shoppingcartscreen")}}>
       <Entypo name="shopping-cart" size={30} color="#efefef" />
+      </Pressable>
     </View>
   );
 }

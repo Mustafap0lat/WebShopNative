@@ -3,9 +3,10 @@ import { View, Text, StyleSheet, Image, Pressable } from "react-native"
 import AntDesign from "react-native-vector-icons/AntDesign"
 import axios from 'axios'
 import { useNavigation } from '@react-navigation/native'
+import { useFonts } from 'expo-font';
+
 
   function ItemMenu() {
-
     const [product, setProduct] = useState([]);
 
 
@@ -30,6 +31,9 @@ import { useNavigation } from '@react-navigation/native'
   return (
     <View style={styles.container}>
       {product.map((item, index) => (
+            
+        <Pressable  onPress={() => nav.navigate('productscreen', {item})}
+            >
         <View key={index} style={styles.row}>
           <Image source={{uri: item.photo}} style={styles.image} />
             <View>
@@ -44,18 +48,13 @@ import { useNavigation } from '@react-navigation/native'
           <Text style={styles.text}>
             {item.description}
             </Text>
-          <Text style={styles.text}>
+          <Text style={styles.price}>
             {item.price}
             </Text>
             </View>  
-    
-           <Pressable style={styles.buttonContainer}
-           onPress={() => nav.navigate('productscreen', {item})}>
-
-        <Text style={styles.button}>Whatever</Text>
+        </View>
+        </View>
         </Pressable>
-        </View>
-        </View>
       ))}
 
 
@@ -123,6 +122,12 @@ const styles = StyleSheet.create({
       fontSize: 12,
       paddingTop: 12,
       fontWeight: "600"
+    },
+    price:{
+      color:"yellow",
+      paddingLeft:15,
+      fontSize:25,
+
     }
   })
 

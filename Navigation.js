@@ -7,6 +7,7 @@ import HomeScreen from './screens/HomeScreen';
 import ProductScreen from "./screens/ProductScreen";
 import { CartProvider } from './CartContext';
 import EditScreen from './screens/EditScreen';
+import ShoppingCartScreen from './screens/ShoppingCartScreen'
 
 
 
@@ -61,6 +62,9 @@ function Navigation() {
                 headerTitleAlign: "center",
               }}
             />
+            <Stack.Screen 
+            name='shoppingcartscreen' 
+            component={ShoppingCartScreen}/>
           </Stack.Navigator>
         </NavigationContainer>
       </CartProvider>

@@ -22,6 +22,7 @@ const AddProduct = () => {
             "Content-Type": "application/json",
           },
         })
+        setInput("")
       };
 
   return (

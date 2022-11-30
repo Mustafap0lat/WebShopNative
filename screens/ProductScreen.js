@@ -7,6 +7,7 @@ import EditScreen from "./EditScreen";
 
 const ProductScreen = ({ route }) => {
   const [product, setProduct] = useState(route.params.item);
+
   
   const nav = useNavigation();
 
@@ -22,6 +23,9 @@ const ProductScreen = ({ route }) => {
       <Text>Price: {product.price}</Text>
       <Image source={{uri: product.photo}} style={styles.image}/> 
       </View>
+      <Pressable onPress={() => addItemToCart(product.productID)}>
+        <Text>Add to Cart</Text>
+        </Pressable>
       <Pressable onPress={() => nav.navigate('editscreen',{product} )}>
         <Text>Edit</Text>
         </Pressable>

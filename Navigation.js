@@ -62,9 +62,17 @@ function Navigation() {
                 headerTitleAlign: "center",
               }}
             />
-            <Stack.Screen 
-            name='shoppingcartscreen' 
-            component={ShoppingCartScreen}/>
+            <Stack.Screen
+              component={ShoppingCartScreen}
+              name="shoppingcartscreen"
+              options={{
+                headerStyle: {
+                  backgroundColor: "#1c1c1c",
+                },
+                headerTintColor: "white",
+                headerTitleAlign: "center",
+              }}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </CartProvider>

@@ -1,5 +1,5 @@
 import React,{ useState, useEffect }  from 'react'
-import { View, Text, StyleSheet, Image, Pressable } from "react-native"
+import { View, Text, StyleSheet, Image, Pressable, SafeAreaView, ScrollView } from "react-native"
 import AntDesign from "react-native-vector-icons/AntDesign"
 import axios from 'axios'
 import { useNavigation } from '@react-navigation/native'
@@ -16,7 +16,7 @@ import { useFonts } from 'expo-font';
     function GetItems(){
         axios
         .get('http://10.0.2.2:8080/api/product').then((res) => {
-        setProduct(res.data);
+        setProduct(res.data.reverse());
         console.log(res.data);
       })
       }
@@ -29,59 +29,69 @@ import { useFonts } from 'expo-font';
       }, []);
 
   return (
-    <View style={styles.container}>
-      {product.map((item, index) => (
-            
-        <Pressable  onPress={() => nav.navigate('productscreen', {item})}
+    <ScrollView>
+      <View style={styles.container}>
+        <SafeAreaView>
+          {product.map((item, index) => (
+            <Pressable
+              key={index}
+              onPress={() => nav.navigate("productscreen", { item })}
             >
-        <View key={index} style={styles.row}>
-          <Image source={{uri: item.photo}} style={styles.image} />
-            <View>
-   
-          <View key={index} style={styles.column}>
-          <Text style={styles.text}>
-            {item.productName}
-            </Text>
-          <Text style={styles.text}>
-            {item.productTitle}
-            </Text>
-          <Text style={styles.text}>
-            {item.description}
-            </Text>
-          <Text style={styles.price}>
-            {item.price}
-            </Text>
-            </View>  
-        </View>
-        </View>
-        </Pressable>
-      ))}
-
-
-    </View>
+              <View style={styles.row}>
+                <Image source={{ uri: item.photo }} style={styles.image} />
+                <View key={index} style={styles.headerInfo}>
+                  <Text style={styles.header}>{item.productName}</Text>
+                  <Text style={styles.text}>{item.productTitle}</Text>
+                </View>
+                <View style={styles.priceInfo}>
+                  <Text style={styles.price}>{item.price}:-</Text>
+                </View>
+              </View>
+            </Pressable>
+          ))}
+        </SafeAreaView>
+      </View>
+    </ScrollView>
   );
 }
 
 export default ItemMenu
 
 const styles = StyleSheet.create({
+ 
+  container:{
+    marginTop: 25,
+    marginBottom: 50,
+    paddingBottom: 10,
+    borderBottomColor: "#1F1F1F",
+    borderBottomWidth: 1,
+    flexDirection: "column",
+    justifyContent: "space-between"
+  },
+  
   row:{
       flexDirection:"row",
       marginTop:20,
       alignItems:"center"
   },
-  starredIcon:{
-      backgroundColor:"#333333",
-      width:55,
-      height:55,
-      justifyContent:"center",
-      alignItems:"center",
-      borderRadius:20
-  },
+
   text: {
     color:"white",
     paddingLeft:15,
-    fontSize:20
+    fontSize:10,
+    marginBottom:30
+  },
+  header: {
+    color:"white",
+    paddingLeft:15,
+    fontSize:20,
+    
+  },
+  headerInfo: {
+    color:"white",
+    paddingLeft:15,
+    fontSize:20,
+    marginBottom:80
   },
   image: {
     width:150,
@@ -89,21 +99,12 @@ const styles = StyleSheet.create({
     borderRadius:20
   },
   
-    container:{
-      marginTop: 25,
-      paddingBottom: 10,
-      borderBottomColor: "#1F1F1F",
-      borderBottomWidth: 1,
-      flexDirection: "column",
-      justifyContent: "space-between"
-      
-    },
     buttonContainer:{
       paddingLeft: 6,
       alignItems: "center",
       justifyContent:"center",
       fontWeight: "30",
- 
+
       
     },
     button: {
@@ -126,8 +127,16 @@ const styles = StyleSheet.create({
     price:{
       color:"yellow",
       paddingLeft:15,
-      fontSize:25,
-
+      fontSize:20,
+  
+    },
+    priceInfo:{
+    position: "absolute",
+    left: 265,
+    top: 120
+  
+      
+  
     }
   })
 

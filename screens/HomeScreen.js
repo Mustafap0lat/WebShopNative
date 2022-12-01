@@ -7,6 +7,7 @@ import SearchBar from "../components/SearchBar";
 import MenuButtons from "../components/MenuButtons";
 import ItemMenu from "../components/ItemMenu";
 
+let urlh = "https://cdn.pocket-lint.com/r/s/970x/assets/images/157961-phones-review-hands-on-samsung-galaxy-z-fold-3-review-image1-coz70vermc-jpg.webp"
 
 
 
@@ -46,8 +47,6 @@ const  HomeScreen = ({navigation}) => {
 }
 
 export default HomeScreen;
-
-
 
 const styles = StyleSheet.create({
   container:{

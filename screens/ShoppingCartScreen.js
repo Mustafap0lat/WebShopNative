@@ -1,7 +1,8 @@
 import React, { useContext, useState, useEffect } from "react";
-import { View, Text, Pressable, Button, Alert, ToastAndroid } from "react-native";
+import { View, Text, Pressable, Button, Alert, StyleSheet, Image, SafeAreaView } from "react-native";
 import { CartContext } from "../CartContext";
 import { StripeProvider, useStripe } from "@stripe/stripe-react-native";
+import axios from "axios";
 
 const ShoppingCartScreen = () => {
   const { items, getTotalPrice } = useContext(CartContext);
@@ -11,9 +12,9 @@ const ShoppingCartScreen = () => {
 
   useEffect(() => {
     setTotal(getTotalPrice());
+    
   }, []);
 
-  
 
   const BASE_URL = "http://10.0.2.2:8080/api/stripe"
 
@@ -66,26 +67,77 @@ const ShoppingCartScreen = () => {
     <StripeProvider
     publishableKey="pk_test_51M9ox9JCbTZh5qBt8HNeqJa9zgzHCXZgBxrRr9yzJWsEUfNwFIK1uDjAIBjXGB1uuplS3nYSbxBCRvScw3Vgtk7v00msl2FTiI"
     >
-    <View>
+      <SafeAreaView style={{flex:1}}>
+    <View style={styles.container}>
       {items.map((product, key) => (
-        <View key={key} >
-          <Text>ProductName: {product.product.productName}</Text>
-          <Text>ProductPrice: {product.product.price}</Text>
-          <Text>Quiantiy: {product.qty}</Text>
+        <View key={key} style={styles.row}>
+
+     
+          <Image source={{ uri: product.product.photo }} style={styles.image} />
+          <View style={styles.cardText}>
+          <Text style={styles.text}>Product: {product.product.productName}</Text>
+          <Text style={styles.text}>Price: {product.product.price}</Text>
+          <Text style={styles.text}>Quantity: {product.qty}</Text>
+          <Text style={styles.text}>Total Price: {total}</Text>
+          </View>
+          
+
         </View>
       ))}
-      <Pressable>
-      <Text>TotaltPrice: {total}</Text>
-      <Button
-        variant="primary"
-        title="Checkout"
-        onPress={openPaymentSheet}
-      />
-      </Pressable>
+      <View style={{justifyContent:"center", alignItems:"center"}}>
+      <Pressable style={styles.submitBox} onPress={openPaymentSheet}>
+        <Text style={{color:"white"}}>
+           Continue to Checkout
+        </Text>
+        </Pressable>
+        </View>
     </View>
+    </SafeAreaView>
   </StripeProvider>
     
   );
 };
 
 export default ShoppingCartScreen;
+
+const styles = StyleSheet.create({
+  container:{
+    flex:1,
+      backgroundColor: "#1c1c1c",
+      padding: 20,
+     
+  },
+  buttonBox:{
+    marginTop:50,
+  },
+  submitBox:{
+    justifyContent:"center",
+    alignItems:"center",
+    borderWidth: 1,
+    borderRadius: 10,
+    padding: 8,
+    margin: 10,
+    width:300,
+    backgroundColor:"green"
+  },
+  image: {
+    width:100,
+    height:100,
+    borderRadius:20
+  },
+  cardText:{
+    paddingLeft: 20,
+    marginBottom:17
+
+  },
+  row:{
+    flexDirection:"row",
+    marginTop:20,
+    alignItems:"center",
+},
+  text:{
+    color:"white",
+    marginTop:5,
+ 
+},
+})

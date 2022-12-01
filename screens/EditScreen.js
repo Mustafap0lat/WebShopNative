@@ -1,4 +1,4 @@
-import { View, Text, Pressable, TextInput, StyleSheet, Button, Share } from "react-native";
+import { View, Text, Pressable, TextInput, StyleSheet, SafeAreaView, Platform, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { useContext, useState } from "react";
 import { useNavigation } from '@react-navigation/native'
 import axios from "axios";
@@ -16,7 +16,7 @@ const EditScreen = ({ route }) => {
    const [description, setDescription] = useState(route.params.product.description);
    const [price, setPrice] = useState(route.params.product.price);
    const [photo, setPhoto] = useState(route.params.product.photo);
-   const [data, setData] = useState({productName:"", productTitle:"", description:"", price:"", photo:""});
+
    
 
   const handleChange = (name, text) => {
@@ -26,60 +26,73 @@ const EditScreen = ({ route }) => {
 
 
     const editProduct = async (product) => {
-      console.log("input:", data);
       await fetch(`http://10.0.2.2:8080/api/product/${product.productID}`, {
         method: "PUT",
         body: JSON.stringify(product),
         headers: {
           "Content-Type": "application/json",
         },
-      })
+      }).then(nav.navigate("HomeScreen"))
     };
 
 
   function deleteProduct(product) {
    axios 
-      .delete(`http://10.0.2.2:8080/api/product/${product.productID}`)
-      .then(nav.navigate('HomeScreen'));
+      .delete(`http://10.0.2.2:8080/api/product/${product.productID}`).then(nav.navigate("HomeScreen"))
+ 
 
   }
   
   
   return (
     <View style={styles.container}>
-        <View>
-        <TextInput
+        <SafeAreaView>
+          <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          >
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+              <View>
+        <TextInput style={styles.input}
         placeholder={productName}
+        placeholderTextColor={"gray"}
         onChangeText={(text) => handleChange("productName", text)}
         />
-        <TextInput
+        <TextInput style={styles.input}
         placeholder={productTitle}
+        placeholderTextColor={"gray"}
         onChangeText={(text) => handleChange("productTitle", text)}
         />
-        <TextInput
+        <TextInput style={styles.input}
         placeholder={description}
+        placeholderTextColor={"gray"}
         onChangeText={(text) => handleChange("description", text)}
         />
-        <TextInput
+        <TextInput style={styles.input}
         placeholder={JSON.stringify(price)}
+        placeholderTextColor={"gray"}
         onChangeText={(text) => handleChange("price", text)}
         />
-        <TextInput
+        <TextInput style={styles.input}
         placeholder={photo}
-        onChangeText={(text) => handleChange("description", text)}
+        placeholderTextColor={"teal"}
+        onChangeText={(text) => handleChange("photo", text)}
         />
-      
-        <Pressable onPress={() => editProduct(product)}>
-        
-   <Text>Edit</Text>
-   </Pressable>
+
+      <View style={styles.button}>
+        <Pressable style={styles.buttonBoxSave} onPress={() => editProduct(product)}>
+         <Text style={{color:"white"}}>Save</Text>
+       </Pressable>
 
 
-      <Pressable onPress={() => deleteProduct(product)}>
-        <Text>Delete</Text>
+      <Pressable style={styles.buttonBoxDelete} onPress={() => deleteProduct(product)}>
+        <Text style={{color:"white"}}>Delete</Text>
         </Pressable>
-     </View>
-   
+        </View>
+        </View>
+        </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
+        </SafeAreaView>
+      
     </View>
   );
 };
@@ -90,15 +103,42 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#1c1c1c",
+    justifyContent:"center",
+    alignItems:"center",
     padding: 20,
   },
 
   input: {
     borderWidth: 1,
-    borderColor: "green",
+    borderColor: "orange",
     borderRadius: 10,
     padding: 8,
     margin: 10,
-    width: 200,
+    width:300,
+    color:"white"   
+  },
+  buttonBoxDelete: {
+    backgroundColor:"red",
+    borderRadius: 15,
+    padding: 8,
+    width: 80,
+    justifyContent: "center",
+    alignItems:"center",
+
+  },
+  buttonBoxSave: {
+    backgroundColor:"purple",
+    borderRadius: 15,
+    padding: 8,
+    width: 80,
+    justifyContent: "center",
+    alignItems:"center",
+  },
+  button: {
+    justifyContent:"space-between",
+    alignItems:"center",
+     flexDirection:"row",
+      marginTop: 10,
+      padding:10
   },
 });
